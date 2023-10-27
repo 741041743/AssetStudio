@@ -46,8 +46,8 @@ namespace AssetStudioGUI
                 m_PathID.ToString(), //PathID
                 TypeString, //Type
                 Gesamtzahl.ToString(),
-                ((float)FullSize/(1024 * 1024)).ToString()+" MB", //Size
-                ((Gesamtzahl-1)*(float)FullSize/(1024 * 1024)).ToString()+" MB"
+                ((float)FullSize/(1024 * 1024)).ToString("F2")+" MB", //Size
+                ((Gesamtzahl-1)*(float)FullSize/(1024 * 1024)).ToString("F2")+" MB"
             });
         }
     }

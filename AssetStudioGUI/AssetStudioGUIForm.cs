@@ -671,7 +671,7 @@ namespace AssetStudioGUI
                 }
                 if (enablePreview.Checked)
                 {
-                    PreviewText(lastSelectedItem.AllContainer);
+                    PreviewText(("包含此资源的AssetBundle:\n"+lastSelectedItem.AllContainer).Replace("\n", "\r\n").Replace("\0", ""));
                     if (displayInfo.Checked && lastSelectedItem.InfoText != null)
                     {
                         assetInfoLabel.Text = lastSelectedItem.InfoText;

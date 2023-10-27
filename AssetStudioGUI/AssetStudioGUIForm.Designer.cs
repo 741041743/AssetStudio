@@ -552,7 +552,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.tabControl2);
             this.splitContainer1.Panel2.Controls.Add(this.statusStrip1);
             this.splitContainer1.Panel2MinSize = 400;
-            this.splitContainer1.Size = new System.Drawing.Size(1264, 656);
+            this.splitContainer1.Size = new System.Drawing.Size(1000, 656);
             this.splitContainer1.SplitterDistance = 482;
             this.splitContainer1.TabIndex = 2;
             this.splitContainer1.TabStop = false;
@@ -747,7 +747,7 @@
             this.redundanteRessourcenListView.HideSelection = false;
             this.redundanteRessourcenListView.Location = new System.Drawing.Point(0, 21);
             this.redundanteRessourcenListView.Name = "redundanteRessourcenListView";
-            this.redundanteRessourcenListView.Size = new System.Drawing.Size(472, 587);
+            this.redundanteRessourcenListView.Size = new System.Drawing.Size(560, 587);
             this.redundanteRessourcenListView.TabIndex = 1;
             this.redundanteRessourcenListView.UseCompatibleStateImageBehavior = false;
             this.redundanteRessourcenListView.View = System.Windows.Forms.View.Details;
@@ -760,16 +760,16 @@
             // columnHeader1
             // 
             this.redundanteRessourcenColumnHeader1.Text = "Name";
-            this.redundanteRessourcenColumnHeader1.Width = 150;
+            this.redundanteRessourcenColumnHeader1.Width = 120;
             // 
             // columnHeader2
             // 
             this.redundanteRessourcenColumnHeader2.Text = "PathID";
-            this.redundanteRessourcenColumnHeader2.Width = 150;
+            this.redundanteRessourcenColumnHeader2.Width = 120;
             // 
             // columnHeader2
             // 
-            this.redundanteRessourcenColumnHeader3.Text = "Type";
+            this.redundanteRessourcenColumnHeader3.Text = "资源类型";
             this.redundanteRessourcenColumnHeader3.Width = 70;
             // 
             // columnHeader2
@@ -782,7 +782,7 @@
             this.redundanteRessourcenColumnHeader5.Text = "单个大小";
             this.redundanteRessourcenColumnHeader5.Width = 70;
 
-            this.redundanteRessourcenColumnHeader6.Text = "冗余大小(MB)";
+            this.redundanteRessourcenColumnHeader6.Text = "冗余大小";
             this.redundanteRessourcenColumnHeader6.Width = 70;
             // 
             // progressbarPanel
@@ -840,7 +840,7 @@
             this.previewPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.previewPanel.Location = new System.Drawing.Point(0, 0);
             this.previewPanel.Name = "previewPanel";
-            this.previewPanel.Size = new System.Drawing.Size(768, 606);
+            this.previewPanel.Size = new System.Drawing.Size(500, 606);
             this.previewPanel.TabIndex = 1;
             this.previewPanel.Resize += new System.EventHandler(this.preview_Resize);
             // 

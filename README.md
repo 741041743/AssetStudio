@@ -1,6 +1,8 @@
 # AssetStudio
 [![Build status](https://ci.appveyor.com/api/projects/status/rnu7l90422pdewx4?svg=true)](https://ci.appveyor.com/project/Perfare/assetstudio/branch/master/artifacts)
 
+## 增加重复资源检查功能
+
 **None of the repo, the tool, nor the repo owner is affiliated with, or sponsored or authorized by, Unity Technologies or its affiliates.**
 
 AssetStudio is a tool for exploring, extracting and exporting assets and assetbundles.

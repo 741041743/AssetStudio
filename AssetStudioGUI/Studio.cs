@@ -140,6 +140,7 @@ namespace AssetStudioGUI
             string productName = null;
             var objectCount = assetsManager.assetsFileList.Sum(x => x.Objects.Count);
             var objectAssetItemDic = new Dictionary<Object, AssetItem>(objectCount);
+            var objectAssetItemDic2 = new Dictionary<Object, AssetItem>(objectCount);
             var containers = new List<(PPtr<Object>, string)>();
             int i = 0;
             Progress.Reset();
@@ -151,6 +152,7 @@ namespace AssetStudioGUI
                     var assetItem = new AssetItem(asset);
                     var assetItem2 = new AssetItem(asset);
                     objectAssetItemDic.Add(asset, assetItem);
+                    objectAssetItemDic2.Add(asset, assetItem2);
                     assetItem.UniqueID = " #" + i;
                     assetItem2.UniqueID = " #" + i;
                     var exportable = false;
@@ -276,6 +278,14 @@ namespace AssetStudioGUI
                     objectAssetItemDic[obj].Container = container;
                 }
             }
+            foreach ((var pptr, var container) in containers)
+            {
+                if (pptr.TryGet(out var obj))
+                {
+                    objectAssetItemDic2[obj].Container = container;
+                }
+            }
+            
             foreach (var tmp in exportableAssets)
             {
                 tmp.SetSubItems();
