@@ -2,6 +2,9 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/rnu7l90422pdewx4?svg=true)](https://ci.appveyor.com/project/Perfare/assetstudio/branch/master/artifacts)
 
 ## 增加重复资源检查功能
+![1698395936984_BAAFC3BC-5797-4878-AB2A-8E16242C5CB3](https://github.com/741041743/AssetStudio/assets/58835864/a44d379f-7f1a-48ca-af40-5cac6c34c3e7)
+应用下载：https://github.com/741041743/AssetStudio/blob/master/AssetStudioExe.zip
+
 
 **None of the repo, the tool, nor the repo owner is affiliated with, or sponsored or authorized by, Unity Technologies or its affiliates.**
 
