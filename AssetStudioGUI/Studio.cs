@@ -38,6 +38,7 @@ namespace AssetStudioGUI
         public static AssemblyLoader assemblyLoader = new AssemblyLoader();
         public static List<AssetItem> exportableAssets = new List<AssetItem>();
         public static List<AssetItem> visibleAssets = new List<AssetItem>();
+        public static List<AssetItem> redundanzAssets = new List<AssetItem>();
         internal static Action<string> StatusStripUpdate = x => { };
 
         public static int ExtractFolder(string path, string savePath)
@@ -142,39 +143,58 @@ namespace AssetStudioGUI
             var containers = new List<(PPtr<Object>, string)>();
             int i = 0;
             Progress.Reset();
+            var redundanzAssets2 = new List<AssetItem>();
             foreach (var assetsFile in assetsManager.assetsFileList)
             {
                 foreach (var asset in assetsFile.Objects)
                 {
                     var assetItem = new AssetItem(asset);
+                    var assetItem2 = new AssetItem(asset);
                     objectAssetItemDic.Add(asset, assetItem);
                     assetItem.UniqueID = " #" + i;
+                    assetItem2.UniqueID = " #" + i;
                     var exportable = false;
                     switch (asset)
                     {
                         case GameObject m_GameObject:
                             assetItem.Text = m_GameObject.m_Name;
+                            assetItem2.Text = m_GameObject.m_Name;
                             break;
                         case Texture2D m_Texture2D:
                             if (!string.IsNullOrEmpty(m_Texture2D.m_StreamData?.path))
+                            {
                                 assetItem.FullSize = asset.byteSize + m_Texture2D.m_StreamData.size;
+                                assetItem2.FullSize = asset.byteSize + m_Texture2D.m_StreamData.size; 
+                            }
                             assetItem.Text = m_Texture2D.m_Name;
+                            assetItem2.Text = m_Texture2D.m_Name;
                             exportable = true;
                             break;
                         case AudioClip m_AudioClip:
                             if (!string.IsNullOrEmpty(m_AudioClip.m_Source))
+                            {
                                 assetItem.FullSize = asset.byteSize + m_AudioClip.m_Size;
+                                assetItem2.FullSize = asset.byteSize + m_AudioClip.m_Size;
+                            }
+                                
                             assetItem.Text = m_AudioClip.m_Name;
+                            assetItem2.Text = m_AudioClip.m_Name;
                             exportable = true;
                             break;
                         case VideoClip m_VideoClip:
                             if (!string.IsNullOrEmpty(m_VideoClip.m_OriginalPath))
+                            {
                                 assetItem.FullSize = asset.byteSize + (long)m_VideoClip.m_ExternalResources.m_Size;
+                                assetItem2.FullSize = asset.byteSize + (long)m_VideoClip.m_ExternalResources.m_Size;
+                            }
+                                
                             assetItem.Text = m_VideoClip.m_Name;
+                            assetItem2.Text = m_VideoClip.m_Name;
                             exportable = true;
                             break;
                         case Shader m_Shader:
                             assetItem.Text = m_Shader.m_ParsedForm?.m_Name ?? m_Shader.m_Name;
+                            assetItem2.Text = m_Shader.m_ParsedForm?.m_Name ?? m_Shader.m_Name;
                             exportable = true;
                             break;
                         case Mesh _:
@@ -184,12 +204,14 @@ namespace AssetStudioGUI
                         case MovieTexture _:
                         case Sprite _:
                             assetItem.Text = ((NamedObject)asset).m_Name;
+                            assetItem2.Text = ((NamedObject)asset).m_Name;
                             exportable = true;
                             break;
                         case Animator m_Animator:
                             if (m_Animator.m_GameObject.TryGet(out var gameObject))
                             {
                                 assetItem.Text = gameObject.m_Name;
+                                assetItem2.Text = gameObject.m_Name;
                             }
                             exportable = true;
                             break;
@@ -197,10 +219,12 @@ namespace AssetStudioGUI
                             if (m_MonoBehaviour.m_Name == "" && m_MonoBehaviour.m_Script.TryGet(out var m_Script))
                             {
                                 assetItem.Text = m_Script.m_ClassName;
+                                assetItem2.Text = m_Script.m_ClassName;
                             }
                             else
                             {
                                 assetItem.Text = m_MonoBehaviour.m_Name;
+                                assetItem2.Text = m_MonoBehaviour.m_Name;
                             }
                             exportable = true;
                             break;
@@ -219,6 +243,7 @@ namespace AssetStudioGUI
                                 }
                             }
                             assetItem.Text = m_AssetBundle.m_Name;
+                            assetItem2.Text = m_AssetBundle.m_Name;
                             break;
                         case ResourceManager m_ResourceManager:
                             foreach (var m_Container in m_ResourceManager.m_Container)
@@ -228,15 +253,18 @@ namespace AssetStudioGUI
                             break;
                         case NamedObject m_NamedObject:
                             assetItem.Text = m_NamedObject.m_Name;
+                            assetItem2.Text = m_NamedObject.m_Name;
                             break;
                     }
                     if (assetItem.Text == "")
                     {
                         assetItem.Text = assetItem.TypeString + assetItem.UniqueID;
+                        assetItem2.Text = assetItem2.TypeString + assetItem2.UniqueID;
                     }
                     if (Properties.Settings.Default.displayAll || exportable)
                     {
                         exportableAssets.Add(assetItem);
+                        redundanzAssets2.Add(assetItem2);
                     }
                     Progress.Report(++i, objectCount);
                 }
@@ -252,9 +280,35 @@ namespace AssetStudioGUI
             {
                 tmp.SetSubItems();
             }
+
             containers.Clear();
 
-            visibleAssets = exportableAssets;
+            visibleAssets = redundanzAssets2;
+            Dictionary<long,AssetItem> keyValuePairs = new Dictionary<long,AssetItem>();
+            foreach (var kvp in redundanzAssets2)
+            {
+                if(keyValuePairs.TryGetValue(kvp.m_PathID,out var assetItem3))
+                {
+                    assetItem3.Gesamtzahl ++;
+                    assetItem3.AllContainer += "\n" + kvp.Container;
+                }
+                else
+                {
+                    kvp.AllContainer = kvp.Container;
+                    keyValuePairs.Add(kvp.m_PathID, kvp);
+                }
+            }
+            redundanzAssets = new List<AssetItem>(keyValuePairs.Values);
+            foreach (var tmp in redundanzAssets)
+            {
+                tmp.SetSubItems2();
+            }
+            redundanzAssets.Sort((a, b) =>
+            {
+                var asf = a.FullSize* (a.Gesamtzahl-1);
+                var bsf = b.FullSize* (b.Gesamtzahl-1);
+                return bsf.CompareTo(asf);
+            });
 
             StatusStripUpdate("Building tree structure...");
 

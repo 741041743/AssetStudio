@@ -82,6 +82,7 @@
             this.sceneTreeView = new AssetStudioGUI.GOHierarchy();
             this.treeSearch = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
             this.assetListView = new System.Windows.Forms.ListView();
             this.columnHeaderName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeaderContainer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -90,9 +91,17 @@
             this.columnHeaderSize = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.listSearch = new System.Windows.Forms.TextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+
             this.classesListView = new System.Windows.Forms.ListView();
+            this.redundanteRessourcenListView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.redundanteRessourcenColumnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.redundanteRessourcenColumnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.redundanteRessourcenColumnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.redundanteRessourcenColumnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.redundanteRessourcenColumnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.redundanteRessourcenColumnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.progressbarPanel = new System.Windows.Forms.Panel();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.tabControl2 = new System.Windows.Forms.TabControl();
@@ -135,6 +144,7 @@
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.tabPage6.SuspendLayout();
             this.progressbarPanel.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage4.SuspendLayout();
@@ -552,6 +562,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -708,6 +719,71 @@
             this.columnHeader2.DisplayIndex = 0;
             this.columnHeader2.Text = "ID";
             this.columnHeader2.Width = 70;
+
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.redundanteRessourcenListView);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(472, 608);
+            this.tabPage6.TabIndex = 3;
+            this.tabPage6.Text = "检查重复资源";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // classesListView
+            // 
+            this.redundanteRessourcenListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.redundanteRessourcenColumnHeader1,
+            this.redundanteRessourcenColumnHeader2,
+            this.redundanteRessourcenColumnHeader3,
+            this.redundanteRessourcenColumnHeader4,
+            this.redundanteRessourcenColumnHeader5,
+            this.redundanteRessourcenColumnHeader6
+            });
+            this.redundanteRessourcenListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.redundanteRessourcenListView.FullRowSelect = true;
+            this.redundanteRessourcenListView.GridLines = true;
+            this.redundanteRessourcenListView.HideSelection = false;
+            this.redundanteRessourcenListView.Location = new System.Drawing.Point(0, 21);
+            this.redundanteRessourcenListView.Name = "redundanteRessourcenListView";
+            this.redundanteRessourcenListView.Size = new System.Drawing.Size(472, 587);
+            this.redundanteRessourcenListView.TabIndex = 1;
+            this.redundanteRessourcenListView.UseCompatibleStateImageBehavior = false;
+            this.redundanteRessourcenListView.View = System.Windows.Forms.View.Details;
+            this.redundanteRessourcenListView.VirtualMode = true;
+            this.redundanteRessourcenListView.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.redundanteRessourcenListView_ColumnClick);
+            this.redundanteRessourcenListView.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.redundanteRessourcenListViewSelectAsset);
+            this.redundanteRessourcenListView.RetrieveVirtualItem += new System.Windows.Forms.RetrieveVirtualItemEventHandler(this.redundanteRessourcenListView_RetrieveVirtualItem);
+            this.redundanteRessourcenListView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.redundanteRessourcenListView_MouseClick);
+            // 
+            // columnHeader1
+            // 
+            this.redundanteRessourcenColumnHeader1.Text = "Name";
+            this.redundanteRessourcenColumnHeader1.Width = 150;
+            // 
+            // columnHeader2
+            // 
+            this.redundanteRessourcenColumnHeader2.Text = "PathID";
+            this.redundanteRessourcenColumnHeader2.Width = 150;
+            // 
+            // columnHeader2
+            // 
+            this.redundanteRessourcenColumnHeader3.Text = "Type";
+            this.redundanteRessourcenColumnHeader3.Width = 70;
+            // 
+            // columnHeader2
+            // 
+            this.redundanteRessourcenColumnHeader4.Text = "相同数量";
+            this.redundanteRessourcenColumnHeader4.Width = 70;
+            // 
+            // columnHeader2
+            // 
+            this.redundanteRessourcenColumnHeader5.Text = "单个大小";
+            this.redundanteRessourcenColumnHeader5.Width = 70;
+
+            this.redundanteRessourcenColumnHeader6.Text = "冗余大小(MB)";
+            this.redundanteRessourcenColumnHeader6.Width = 70;
             // 
             // progressbarPanel
             // 
@@ -1091,6 +1167,8 @@
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.progressbarPanel.ResumeLayout(false);
             this.tabControl2.ResumeLayout(false);
@@ -1119,6 +1197,7 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TextBox treeSearch;
         private System.Windows.Forms.TextBox listSearch;
         private System.Windows.Forms.ToolStripMenuItem loadFileToolStripMenuItem;
@@ -1166,6 +1245,16 @@
         private System.Windows.Forms.ListView classesListView;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader1;
+
+        private System.Windows.Forms.ListView redundanteRessourcenListView;
+        private System.Windows.Forms.ColumnHeader redundanteRessourcenColumnHeader1;
+        private System.Windows.Forms.ColumnHeader redundanteRessourcenColumnHeader2;
+        private System.Windows.Forms.ColumnHeader redundanteRessourcenColumnHeader3;
+        private System.Windows.Forms.ColumnHeader redundanteRessourcenColumnHeader4;
+        private System.Windows.Forms.ColumnHeader redundanteRessourcenColumnHeader5;
+        private System.Windows.Forms.ColumnHeader redundanteRessourcenColumnHeader6;
+
+
         private System.Windows.Forms.TextBox classTextBox;
         private System.Windows.Forms.ToolStripMenuItem exportClassStructuresMenuItem;
         private System.Windows.Forms.Label FMODcopyright;

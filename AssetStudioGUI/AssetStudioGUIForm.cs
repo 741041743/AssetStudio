@@ -77,6 +77,7 @@ namespace AssetStudioGUI
         private int sortColumn = -1;
         private bool reverseSort;
 
+
         //asset list filter
         private System.Timers.Timer delayTimer;
         private bool enableFiltering;
@@ -219,6 +220,7 @@ namespace AssetStudioGUI
             }
 
             assetListView.VirtualListSize = visibleAssets.Count;
+            redundanteRessourcenListView.VirtualListSize = redundanzAssets.Count;
 
             sceneTreeView.BeginUpdate();
             sceneTreeView.Nodes.AddRange(treeNodeCollection.ToArray());
@@ -465,6 +467,11 @@ namespace AssetStudioGUI
             e.Item = visibleAssets[e.ItemIndex];
         }
 
+        private void redundanteRessourcenListView_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
+        {
+            e.Item = redundanzAssets[e.ItemIndex];
+        }
+
         private void tabPageSelected(object sender, TabControlEventArgs e)
         {
             switch (e.TabPageIndex)
@@ -630,6 +637,48 @@ namespace AssetStudioGUI
                 });
             }
             assetListView.EndUpdate();
+        }
+
+        private void redundanteRessourcenListView_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            redundanteRessourcenListView.BeginUpdate();
+            redundanteRessourcenListView.SelectedIndices.Clear();
+            redundanteRessourcenListView.EndUpdate();
+        }
+
+        private void redundanteRessourcenListViewSelectAsset(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            previewPanel.BackgroundImage = Properties.Resources.preview;
+            previewPanel.BackgroundImageLayout = ImageLayout.Center;
+            classTextBox.Visible = false;
+            assetInfoLabel.Visible = false;
+            assetInfoLabel.Text = null;
+            textPreviewBox.Visible = false;
+            fontPreviewBox.Visible = false;
+            FMODpanel.Visible = false;
+            glControl1.Visible = false;
+            StatusStripUpdate("");
+
+            FMODreset();
+
+            lastSelectedItem = (AssetItem)e.Item;
+
+            if (e.IsSelected)
+            {
+                if (tabControl2.SelectedIndex == 1)
+                {
+                    dumpTextBox.Text = DumpAsset(lastSelectedItem.Asset);
+                }
+                if (enablePreview.Checked)
+                {
+                    PreviewText(lastSelectedItem.AllContainer);
+                    if (displayInfo.Checked && lastSelectedItem.InfoText != null)
+                    {
+                        assetInfoLabel.Text = lastSelectedItem.InfoText;
+                        assetInfoLabel.Visible = true;
+                    }
+                }
+            }
         }
 
         private void selectAsset(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -1225,6 +1274,8 @@ namespace AssetStudioGUI
             sceneTreeView.Nodes.Clear();
             assetListView.VirtualListSize = 0;
             assetListView.Items.Clear();
+            redundanteRessourcenListView.VirtualListSize = 0;
+            redundanteRessourcenListView.Items.Clear();
             classesListView.Items.Clear();
             classesListView.Groups.Clear();
             previewPanel.BackgroundImage = Properties.Resources.preview;
@@ -1275,6 +1326,33 @@ namespace AssetStudioGUI
 
                 tempClipboard = assetListView.HitTest(new Point(e.X, e.Y)).SubItem.Text;
                 contextMenuStrip1.Show(assetListView, e.X, e.Y);
+            }
+        }
+
+        private void redundanteRessourcenListView_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && redundanteRessourcenListView.SelectedIndices.Count > 0)
+            {
+                goToSceneHierarchyToolStripMenuItem.Visible = false;
+                showOriginalFileToolStripMenuItem.Visible = false;
+                exportAnimatorwithselectedAnimationClipMenuItem.Visible = false;
+
+                if (redundanteRessourcenListView.SelectedIndices.Count == 1)
+                {
+                    goToSceneHierarchyToolStripMenuItem.Visible = true;
+                    showOriginalFileToolStripMenuItem.Visible = true;
+                }
+                if (redundanteRessourcenListView.SelectedIndices.Count >= 1)
+                {
+                    var selectedAssets = GetSelectedAssets();
+                    if (selectedAssets.Any(x => x.Type == ClassIDType.Animator) && selectedAssets.Any(x => x.Type == ClassIDType.AnimationClip))
+                    {
+                        exportAnimatorwithselectedAnimationClipMenuItem.Visible = true;
+                    }
+                }
+
+                tempClipboard = redundanteRessourcenListView.HitTest(new Point(e.X, e.Y)).SubItem.Text;
+                contextMenuStrip1.Show(redundanteRessourcenListView, e.X, e.Y);
             }
         }
 
