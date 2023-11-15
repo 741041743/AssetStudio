@@ -293,32 +293,55 @@ namespace AssetStudioGUI
 
             containers.Clear();
 
-            visibleAssets = redundanzAssets2;
-            Dictionary<long,AssetItem> keyValuePairs = new Dictionary<long,AssetItem>();
+            visibleAssets = exportableAssets;
+            Dictionary<string,AssetItem> keyValuePairs = new Dictionary<string,AssetItem>();
+            bool isRedundanz = false;
             foreach (var kvp in redundanzAssets2)
             {
-                if(keyValuePairs.TryGetValue(kvp.m_PathID,out var assetItem3))
+                if(keyValuePairs.TryGetValue(Path.Combine( kvp.Name,kvp.m_PathID.ToString(),kvp.FullSize.ToString(), kvp.Type.ToString()), out var assetItem3))
                 {
-                    assetItem3.Gesamtzahl ++;
-                    assetItem3.AllContainer += "\n" + kvp.Container;
+                    if(assetItem3.Type ==kvp.Type && assetItem3.m_PathID == kvp.m_PathID && assetItem3.FullSize== kvp.FullSize && assetItem3.Name == kvp.Name)
+                    {
+                        assetItem3.Gesamtzahl++;
+                        assetItem3.AllContainer += "\n" + kvp.Container;
+                        isRedundanz = true;
+                    }
+                    else
+                    {
+                        kvp.AllContainer = kvp.Container;
+                        redundanzAssets.Add(kvp);
+                    }
                 }
                 else
                 {
                     kvp.AllContainer = kvp.Container;
-                    keyValuePairs.Add(kvp.m_PathID, kvp);
+                    keyValuePairs.Add(Path.Combine(kvp.Name, kvp.m_PathID.ToString(), kvp.FullSize.ToString(), kvp.Type.ToString()), kvp);
                 }
             }
-            redundanzAssets = new List<AssetItem>(keyValuePairs.Values);
-            foreach (var tmp in redundanzAssets)
+            foreach (var tmp in keyValuePairs.Values)
             {
                 tmp.SetSubItems2();
+                redundanzAssets.Add(tmp);
             }
-            redundanzAssets.Sort((a, b) =>
+            if (isRedundanz)
             {
-                var asf = a.FullSize* (a.Gesamtzahl-1);
-                var bsf = b.FullSize* (b.Gesamtzahl-1);
-                return bsf.CompareTo(asf);
-            });
+                redundanzAssets.Sort((a, b) =>
+                {
+                    var asf = a.FullSize * (a.Gesamtzahl - 1);
+                    var bsf = b.FullSize * (a.Gesamtzahl - 1);
+                    return bsf.CompareTo(asf);
+                });
+            }
+            else
+            {
+                redundanzAssets.Sort((a, b) =>
+                {
+                    var asf = a.FullSize;
+                    var bsf = b.FullSize;
+                    return bsf.CompareTo(asf);
+                });
+            }
+            
 
             StatusStripUpdate("Building tree structure...");
 
